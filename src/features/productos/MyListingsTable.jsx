@@ -1,7 +1,11 @@
 
 import { formatearPrecio } from '../../hooks/useMockFetch'
 
-export default function MyListingsTable({ productos }) {
+export default function MyListingsTable({
+  productos,
+  onEditar,
+  onEliminar
+}) {
   if (productos.length === 0) {
     return (
       <div className="productos-vacios">
@@ -21,6 +25,7 @@ export default function MyListingsTable({ productos }) {
             <th>Precio</th>
             <th>Stock</th>
             <th>Estado</th>
+            <th>Acciones</th>
           </tr>
         </thead>
 
@@ -67,6 +72,25 @@ export default function MyListingsTable({ productos }) {
                     : 'Sin stock'}
                 </span>
               </td>
+              <td>
+  <div className="productos-acciones">
+    <button
+      type="button"
+      className="btn-accion btn-editar"
+      onClick={() => onEditar(producto)}
+    >
+      Editar
+    </button>
+
+    <button
+      type="button"
+      className="btn-accion btn-eliminar"
+      onClick={() => onEliminar(producto)}
+    >
+      Eliminar
+    </button>
+  </div>
+</td>
             </tr>
           ))}
         </tbody>

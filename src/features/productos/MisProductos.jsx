@@ -3,10 +3,31 @@ import { useState } from 'react'
 import { useMockFetch } from '../../hooks/useMockFetch'
 import './productos.css'
 import MyListingsTable from './MyListingsTable'
+import DeleteConfirmModal from './DeleteConfirmModal'
 
 export default function MisProductos() {
   const { data, loading, error } = useMockFetch('productos')
   const [mostrarFormulario, setMostrarFormulario] = useState(false)
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null)
+  const [productoAEliminar, setProductoAEliminar] = useState(null)
+
+const handleEditar = (producto) => {
+  setProductoSeleccionado(producto)
+  setMostrarFormulario(true)
+}
+
+const handleEliminar = (producto) => {
+  setProductoAEliminar(producto)
+}
+
+const handleCancelarEliminar = () => {
+  setProductoAEliminar(null)
+}
+
+const handleConfirmarEliminar = () => {
+  console.log('Confirmada eliminación:', productoAEliminar)
+  setProductoAEliminar(null)
+}
 
   return (
     <section className="mis-productos">
@@ -40,7 +61,11 @@ export default function MisProductos() {
       Hay {data.length} productos cargados en el catálogo.
     </p>
 
-    <MyListingsTable productos={data} />
+    <MyListingsTable
+  productos={data}
+  onEditar={handleEditar}
+  onEliminar={handleEliminar}
+/>
   </div>
 )}
 
@@ -57,6 +82,11 @@ export default function MisProductos() {
           </button>
         </div>
       )}
+      <DeleteConfirmModal
+  producto={productoAEliminar}
+  onConfirmar={handleConfirmarEliminar}
+  onCancelar={handleCancelarEliminar}
+/>
     </section>
   )
 }
