@@ -55,3 +55,4 @@ export default function Busqueda() {
     </section>
   )
 }
+import './busqueda.css'
