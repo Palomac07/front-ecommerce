@@ -1,6 +1,8 @@
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import FormField from './FormField'
+import ImageUploader from './ImageUploader'
+import ImageOrderList from './ImageOrderList'
 
 export default function ProductForm({
   productoInicial = null,
@@ -16,6 +18,26 @@ export default function ProductForm({
   })
 
   const [errores, setErrores] = useState({})
+  const [imagenes, setImagenes] = useState([])
+  const imagenesCreadas = useRef(new Set())
+
+useEffect(() => {
+  return () => {
+    imagenesCreadas.current.forEach((url) => {
+      URL.revokeObjectURL(url)
+    })
+  }
+}, [])
+
+const handleImagenesChange = (nuevasImagenes) => {
+  nuevasImagenes.forEach((imagen) => {
+    if (imagen.vistaPrevia?.startsWith('blob:')) {
+      imagenesCreadas.current.add(imagen.vistaPrevia)
+    }
+  })
+
+  setImagenes(nuevasImagenes)
+}
 
   const esEdicion = Boolean(productoInicial)
 
@@ -70,11 +92,12 @@ export default function ProductForm({
     if (!validarFormulario()) return
 
     onGuardar({
-      ...formulario,
-      precio: Number(formulario.precio),
-      stock: Number(formulario.stock),
-      categoriaId: Number(formulario.categoriaId)
-    })
+  ...formulario,
+  precio: Number(formulario.precio),
+  stock: Number(formulario.stock),
+  categoriaId: Number(formulario.categoriaId),
+  imagenes
+})
   }
 
   return (
@@ -154,6 +177,19 @@ export default function ProductForm({
           <option value="4">Gaming</option>
         </select>
       </FormField>
+      
+<div className="producto-form-imagenes">
+  <ImageUploader
+    imagenes={imagenes}
+    onImagenesChange={handleImagenesChange}
+  />
+
+  <ImageOrderList
+    imagenes={imagenes}
+    onImagenesChange={handleImagenesChange}
+  />
+</div>
+
 
       <div className="producto-form-botones">
         <button

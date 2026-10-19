@@ -372,3 +372,136 @@
   font-size: 14px;
   font-weight: 500;
 }
+
+/* Sección de imágenes del producto */
+.producto-form-imagenes {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+/* Selector de imágenes */
+.image-uploader {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.image-uploader label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.image-uploader-ayuda {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.image-uploader input {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Vistas previas */
+.image-uploader-grid,
+.image-order-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.image-uploader-item,
+.image-order-item {
+  padding: 12px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.image-uploader-item img,
+.image-order-item img {
+  width: 100%;
+  height: 130px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.image-uploader-item span {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+/* Organización de imágenes */
+.image-order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.image-order-list h3 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.image-order-list p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.image-order-info {
+  margin: 10px 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.image-order-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.image-order-actions button {
+  padding: 7px 10px;
+  background: #e2e8f0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.image-order-actions button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.image-order-actions .btn-quitar-imagen {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .producto-form-imagenes {
+    padding: 12px;
+  }
+
+  .image-uploader-grid,
+  .image-order-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .image-uploader-item img,
+  .image-order-item img {
+    height: 100px;
+  }
+}
