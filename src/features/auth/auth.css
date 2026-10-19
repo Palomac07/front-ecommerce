@@ -1,0 +1,156 @@
+/* ============================================================
+   Estilos de Login y Registro (modulo auth).
+
+   Todas las clases empiezan con "auth-": el CSS que importa cada
+   componente es global, asi que el prefijo evita pisar las clases
+   de otros modulos. Colores y radios salen de las variables de
+   base.css.
+   ============================================================ */
+
+.auth {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.auth-tarjeta {
+  width: 100%;
+  max-width: 420px;
+  padding: 32px 28px;
+}
+.auth-tarjeta-ancha { max-width: 560px; }
+
+.auth-tarjeta h1 {
+  margin: 0 0 4px;
+  font-size: 1.5rem;
+}
+.auth-subtitulo {
+  margin: 0 0 22px;
+  color: var(--color-texto-suave);
+}
+
+/* ---------- Campos ---------- */
+
+.auth-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 16px;
+  min-width: 0;
+}
+.auth-campo label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.auth-campo input[aria-invalid='true'] {
+  border-color: var(--color-error);
+}
+.auth-campo input[aria-invalid='true']:focus {
+  outline-color: var(--color-error);
+}
+.auth-ayuda {
+  color: var(--color-texto-suave);
+  font-size: 0.82rem;
+}
+.auth-error-campo {
+  color: var(--color-error);
+  font-size: 0.82rem;
+}
+
+/* Dos campos lado a lado (nombre y apellido, contraseñas) */
+.auth-fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 14px;
+}
+
+/* ---------- Mensajes ---------- */
+
+.auth-alerta,
+.auth-aviso {
+  margin: 0 0 18px;
+  padding: 10px 12px;
+  border-radius: var(--radio);
+  font-size: 0.92rem;
+}
+.auth-alerta {
+  color: var(--color-error);
+  background: #fbeeec;
+  border: 1px solid #efc9c3;
+}
+.auth-aviso {
+  color: var(--color-primario-oscuro);
+  background: #e8f1f6;
+  border: 1px solid #c3dbe8;
+}
+
+/* ---------- Botones y pie ---------- */
+
+.auth-boton {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.auth-pie {
+  margin: 20px 0 0;
+  text-align: center;
+  color: var(--color-texto-suave);
+  font-size: 0.92rem;
+}
+.auth-pie a {
+  color: var(--color-primario);
+  font-weight: 600;
+}
+.auth-pie a:hover { text-decoration: underline; }
+
+.auth-nota {
+  margin: 14px 0 0;
+  padding-top: 14px;
+  border-top: 1px dashed var(--color-borde);
+  text-align: center;
+  color: var(--color-texto-suave);
+  font-size: 0.8rem;
+}
+
+/* ---------- Sesion activa ---------- */
+
+.auth-datos {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 10px 18px;
+  margin: 0 0 24px;
+}
+.auth-datos dt {
+  color: var(--color-texto-suave);
+  font-size: 0.9rem;
+}
+.auth-datos dd {
+  margin: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.auth-acciones {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.auth-acciones .btn {
+  flex: 1;
+  text-align: center;
+}
+/* base.css oscurece el fondo de .btn al pasar el mouse; en el secundario
+   eso dejaria el texto azul sobre azul. */
+.auth-acciones .btn-secundario:hover {
+  background: var(--color-fondo);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 480px) {
+  .auth { padding: 4px 0; }
+  .auth-tarjeta { padding: 24px 18px; }
+  .auth-fila { grid-template-columns: 1fr; }
+  .auth-datos { grid-template-columns: 1fr; gap: 2px; }
+  .auth-datos dd { margin-bottom: 10px; }
+}
