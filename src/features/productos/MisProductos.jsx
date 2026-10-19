@@ -4,6 +4,7 @@ import { useMockFetch } from '../../hooks/useMockFetch'
 import './productos.css'
 import MyListingsTable from './MyListingsTable'
 import DeleteConfirmModal from './DeleteConfirmModal'
+import ProductForm from './ProductForm'
 
 export default function MisProductos() {
   const { data, loading, error } = useMockFetch('productos')
@@ -40,7 +41,10 @@ const handleConfirmarEliminar = () => {
         <button
           type="button"
           className="btn"
-          onClick={() => setMostrarFormulario(true)}
+          onClick={() => {
+  setProductoSeleccionado(null)
+  setMostrarFormulario(true)
+}}
         >
           + Agregar producto
         </button>
@@ -70,18 +74,18 @@ const handleConfirmarEliminar = () => {
 )}
 
       {mostrarFormulario && (
-        <div className="productos-contenido">
-          <h2>Nuevo producto</h2>
-          <p>Acá vamos a incorporar el formulario de alta.</          p>
-          <button
-            type="button"
-            className="btn btn-secundario"
-            onClick={() => setMostrarFormulario(false)}
-          >
-            Cancelar
-          </button>
-        </div>
-      )}
+  <ProductForm
+    key={productoSeleccionado?.id ?? 'nuevo'}
+    productoInicial={productoSeleccionado}
+    onGuardar={(datos) => {
+      console.log('Datos del formulario:', datos)
+    }}
+    onCancelar={() => {
+      setMostrarFormulario(false)
+      setProductoSeleccionado(null)
+    }}
+  />
+)}
       <DeleteConfirmModal
   producto={productoAEliminar}
   onConfirmar={handleConfirmarEliminar}
