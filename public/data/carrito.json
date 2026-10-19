@@ -1,0 +1,10 @@
+{
+  "id": 7,
+  "usuarioId": 3,
+  "items": [
+    { "productoId": 1, "nombre": "Samsung Galaxy A34 128GB", "cantidad": 1, "precioUnitario": 459999.00, "subtotal": 459999.00 },
+    { "productoId": 6, "nombre": "Sony WH-1000XM4", "cantidad": 2, "precioUnitario": 529999.00, "subtotal": 1059998.00 }
+  ],
+  "cantidadProductos": 3,
+  "total": 1519997.00
+}

@@ -1,0 +1,13 @@
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9.MOCK_SOLO_PARA_LA_MAQUETA.xxx",
+  "tipo": "Bearer",
+  "usuario": {
+    "id": 3,
+    "username": "palomac",
+    "email": "paloma@uade.edu.ar",
+    "nombre": "Paloma",
+    "apellido": "Macchion",
+    "fechaRegistro": "2026-09-01T12:00:00",
+    "rol": "CLIENTE"
+  }
+}

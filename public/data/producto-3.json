@@ -1,0 +1,14 @@
+{
+  "id": 3,
+  "nombre": "iPhone 13 128GB",
+  "descripcion": "Chip A15 Bionic, pantalla Super Retina XDR de 6.1 pulgadas y sistema de camara dual de 12MP con modo noche.",
+  "precio": 1249999.00,
+  "stock": 3,
+  "fechaPublicacion": "2026-09-03T16:45:00",
+  "categoriaNombre": "Celulares",
+  "vendedorNombre": "Luz",
+  "imagenes": [
+    { "id": 3, "url": "/img/celulares.svg", "orden": 1 },
+    { "id": 4, "url": "/img/celulares-2.svg", "orden": 2 }
+  ]
+}

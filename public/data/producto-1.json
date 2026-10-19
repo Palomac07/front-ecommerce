@@ -1,0 +1,14 @@
+{
+  "id": 1,
+  "nombre": "Samsung Galaxy A34 128GB",
+  "descripcion": "Pantalla Super AMOLED de 6.6 pulgadas, 8GB de RAM y 128GB de almacenamiento. Camara principal de 48MP con estabilizador optico.",
+  "precio": 459999.00,
+  "stock": 12,
+  "fechaPublicacion": "2026-09-14T10:30:00",
+  "categoriaNombre": "Celulares",
+  "vendedorNombre": "Dario",
+  "imagenes": [
+    { "id": 1, "url": "/img/celulares.svg", "orden": 1 },
+    { "id": 2, "url": "/img/celulares-2.svg", "orden": 2 }
+  ]
+}

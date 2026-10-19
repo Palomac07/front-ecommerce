@@ -1,0 +1,7 @@
+[
+  { "id": 1, "nombre": "Celulares", "descripcion": "Telefonia movil y accesorios" },
+  { "id": 2, "nombre": "Notebooks", "descripcion": "Computadoras portatiles" },
+  { "id": 3, "nombre": "Audio", "descripcion": "Auriculares y parlantes" },
+  { "id": 4, "nombre": "Gaming", "descripcion": "Consolas y perifericos" }
+]
+

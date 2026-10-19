@@ -1,0 +1,13 @@
+{
+  "id": 6,
+  "nombre": "Sony WH-1000XM4",
+  "descripcion": "Auriculares inalambricos con cancelacion de ruido adaptativa, 30 horas de bateria y carga rapida.",
+  "precio": 529999.00,
+  "stock": 9,
+  "fechaPublicacion": "2026-09-20T09:15:00",
+  "categoriaNombre": "Audio",
+  "vendedorNombre": "Lucia",
+  "imagenes": [
+    { "id": 5, "url": "/img/audio.svg", "orden": 1 }
+  ]
+}

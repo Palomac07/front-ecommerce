@@ -1,0 +1,167 @@
+/* ============================================================
+   Estilos base de la maqueta.
+
+   Variables, reset, layout y utilidades compartidas. Cada modulo
+   agrega SU propio .css dentro de src/features/<modulo>/ y lo importa
+   desde su componente, para que no nos pisemos entre ramas.
+   ============================================================ */
+
+:root {
+  --color-fondo: #f5f6f8;
+  --color-superficie: #ffffff;
+  --color-texto: #16191d;
+  --color-texto-suave: #5d6673;
+  --color-borde: #dfe3e8;
+  --color-primario: #1b5c7d;
+  --color-primario-oscuro: #14465f;
+  --color-error: #a33224;
+
+  --radio: 6px;
+  --sombra: 0 1px 3px rgba(20, 25, 31, 0.08);
+  --ancho-max: 1180px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+
+/* ---------- Estructura ---------- */
+
+.layout { min-height: 100vh; display: flex; flex-direction: column; }
+.contenido {
+  flex: 1;
+  width: 100%;
+  max-width: var(--ancho-max);
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+/* ---------- Navbar ---------- */
+
+.navbar {
+  background: var(--color-superficie);
+  border-bottom: 1px solid var(--color-borde);
+  position: sticky; top: 0; z-index: 10;
+}
+.navbar-inner {
+  max-width: var(--ancho-max);
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.logo { font-weight: 700; font-size: 1.15rem; color: var(--color-primario); }
+.logo span { color: var(--color-texto); font-weight: 400; }
+
+.nav-links { display: flex; gap: 18px; flex: 1; flex-wrap: wrap; }
+.nav-links a { color: var(--color-texto-suave); font-size: 0.94rem; }
+.nav-links a:hover, .nav-links a.active { color: var(--color-primario); }
+
+.nav-acciones { display: flex; align-items: center; gap: 12px; }
+.btn-texto { color: var(--color-texto-suave); font-size: 0.94rem; }
+.btn-carrito {
+  background: var(--color-primario); color: #fff;
+  padding: 7px 15px; border-radius: var(--radio); font-size: 0.9rem;
+}
+.badge {
+  background: var(--color-error); color: #fff;
+  border-radius: 999px; padding: 1px 7px;
+  font-size: 0.72rem; margin-left: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Botones y formularios ---------- */
+
+.btn {
+  display: inline-block;
+  background: var(--color-primario); color: #fff; border: none;
+  padding: 10px 18px; border-radius: var(--radio); font-size: 0.95rem;
+}
+.btn:hover { background: var(--color-primario-oscuro); }
+.btn:disabled { background: var(--color-borde); color: var(--color-texto-suave); cursor: not-allowed; }
+.btn-secundario { background: transparent; color: var(--color-primario); border: 1px solid var(--color-primario); }
+
+input, select, textarea {
+  font: inherit; width: 100%;
+  padding: 9px 11px;
+  border: 1px solid var(--color-borde); border-radius: var(--radio);
+  background: var(--color-superficie); color: var(--color-texto);
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--color-primario); outline-offset: 1px;
+}
+
+/* ---------- Tarjetas y grillas ---------- */
+
+.card {
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+.grid-productos {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}
+
+/* ---------- Estados ---------- */
+
+.estado-vacio, .estado-carga, .estado-error {
+  text-align: center; padding: 56px 16px; color: var(--color-texto-suave);
+}
+.estado-error { color: var(--color-error); }
+.estado-vacio h2 { font-size: 2.6rem; margin: 0 0 8px; color: var(--color-texto); }
+
+/* Marca visual de los modulos que todavia no implemento su dueño */
+.pendiente {
+  border: 2px dashed var(--color-borde);
+  border-radius: var(--radio);
+  padding: 40px 24px; text-align: center;
+  color: var(--color-texto-suave);
+  background: var(--color-superficie);
+}
+.pendiente h2 { margin: 0 0 6px; color: var(--color-texto); font-size: 1.3rem; }
+.pendiente .duenio {
+  display: inline-block; margin-top: 10px;
+  background: var(--color-primario); color: #fff;
+  padding: 3px 12px; border-radius: 999px; font-size: 0.8rem;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  border-top: 1px solid var(--color-borde);
+  background: var(--color-superficie);
+  padding: 22px 16px; text-align: center;
+  color: var(--color-texto-suave); font-size: 0.86rem;
+}
+.footer p { margin: 0 0 4px; }
+.footer-nota { font-size: 0.8rem; opacity: 0.8; }
+
+/* ============================================================
+   Responsive. Se evalua que ande en escritorio y en movil, asi que
+   cada modulo tiene que probar su pantalla en los dos tamaños.
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .nav-links { order: 3; width: 100%; gap: 14px; }
+  .contenido { padding: 18px 14px 36px; }
+  .grid-productos { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+}
+
+@media (max-width: 480px) {
+  body { font-size: 15px; }
+  .nav-links { font-size: 0.88rem; gap: 12px; }
+  .grid-productos { grid-template-columns: repeat(2, 1fr); }
+  .contenido { padding: 14px 12px 32px; }
+}

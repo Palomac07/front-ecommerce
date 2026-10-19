@@ -1,0 +1,10 @@
+[
+  { "id": 3, "nombre": "iPhone 13 128GB", "precio": 1249999.00, "stock": 3, "categoriaNombre": "Celulares", "imagenPrincipalUrl": "/img/celulares.svg" },
+  { "id": 7, "nombre": "JBL Flip 6", "precio": 189999.00, "stock": 15, "categoriaNombre": "Audio", "imagenPrincipalUrl": "/img/audio.svg" },
+  { "id": 4, "nombre": "Lenovo IdeaPad Slim 3", "precio": 899999.00, "stock": 5, "categoriaNombre": "Notebooks", "imagenPrincipalUrl": "/img/notebooks.svg" },
+  { "id": 5, "nombre": "MacBook Air M2 256GB", "precio": 2399999.00, "stock": 2, "categoriaNombre": "Notebooks", "imagenPrincipalUrl": "/img/notebooks.svg" },
+  { "id": 2, "nombre": "Motorola Moto G84 256GB", "precio": 389999.00, "stock": 7, "categoriaNombre": "Celulares", "imagenPrincipalUrl": "/img/celulares.svg" },
+  { "id": 1, "nombre": "Samsung Galaxy A34 128GB", "precio": 459999.00, "stock": 12, "categoriaNombre": "Celulares", "imagenPrincipalUrl": "/img/celulares.svg" },
+  { "id": 6, "nombre": "Sony WH-1000XM4", "precio": 529999.00, "stock": 9, "categoriaNombre": "Audio", "imagenPrincipalUrl": "/img/audio.svg" },
+  { "id": 8, "nombre": "Teclado Logitech G413", "precio": 149999.00, "stock": 0, "categoriaNombre": "Gaming", "imagenPrincipalUrl": null }
+]
