@@ -1,8 +1,15 @@
 
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import FormField from './FormField'
 import ImageUploader from './ImageUploader'
 import ImageOrderList from './ImageOrderList'
+
+const categoriaIds = {
+  Celulares: 1,
+  Notebooks: 2,
+  Audio: 3,
+  Gaming: 4
+}
 
 export default function ProductForm({
   productoInicial = null,
@@ -10,36 +17,35 @@ export default function ProductForm({
   onCancelar
 }) {
   const [formulario, setFormulario] = useState({
-    nombre: productoInicial?.nombre || '',
-    descripcion: productoInicial?.descripcion || '',
+    nombre: productoInicial?.nombre ?? '',
+    descripcion: productoInicial?.descripcion ?? '',
     precio: productoInicial?.precio ?? '',
     stock: productoInicial?.stock ?? '',
-    categoriaId: productoInicial?.categoriaId || ''
+    categoriaId:
+      productoInicial?.categoriaId ??
+      categoriaIds[productoInicial?.categoriaNombre] ??
+      ''
   })
 
   const [errores, setErrores] = useState({})
   const [imagenes, setImagenes] = useState([])
-  const imagenesCreadas = useRef(new Set())
-
-useEffect(() => {
-  return () => {
-    imagenesCreadas.current.forEach((url) => {
-      URL.revokeObjectURL(url)
-    })
-  }
-}, [])
-
-const handleImagenesChange = (nuevasImagenes) => {
-  nuevasImagenes.forEach((imagen) => {
-    if (imagen.vistaPrevia?.startsWith('blob:')) {
-      imagenesCreadas.current.add(imagen.vistaPrevia)
-    }
-  })
-
-  setImagenes(nuevasImagenes)
-}
 
   const esEdicion = Boolean(productoInicial)
+
+  const handleImagenesChange = (nuevasImagenes) => {
+    // Liberamos las vistas previas que se quitaron.
+    imagenes.forEach((imagen) => {
+      const sigueSeleccionada = nuevasImagenes.some(
+        (nueva) => nueva.id === imagen.id
+      )
+
+      if (!sigueSeleccionada && imagen.vistaPrevia?.startsWith('blob:')) {
+        URL.revokeObjectURL(imagen.vistaPrevia)
+      }
+    })
+
+    setImagenes(nuevasImagenes)
+  }
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -66,16 +72,21 @@ const handleImagenesChange = (nuevasImagenes) => {
       nuevosErrores.descripcion = 'La descripción es obligatoria.'
     }
 
-    if (formulario.precio === '' ||
-        !Number.isFinite(Number(formulario.precio)) ||
-        Number(formulario.precio) <= 0) {
+    if (
+      formulario.precio === '' ||
+      !Number.isFinite(Number(formulario.precio)) ||
+      Number(formulario.precio) <= 0
+    ) {
       nuevosErrores.precio = 'Ingresá un precio mayor a cero.'
     }
 
-    if (formulario.stock === '' ||
-        !Number.isInteger(Number(formulario.stock)) ||
-        Number(formulario.stock) < 0) {
-      nuevosErrores.stock = 'El stock debe ser un número entero positivo o cero.'
+    if (
+      formulario.stock === '' ||
+      !Number.isInteger(Number(formulario.stock)) ||
+      Number(formulario.stock) < 0
+    ) {
+      nuevosErrores.stock =
+        'El stock debe ser un número entero positivo o cero.'
     }
 
     if (!formulario.categoriaId) {
@@ -92,12 +103,12 @@ const handleImagenesChange = (nuevasImagenes) => {
     if (!validarFormulario()) return
 
     onGuardar({
-  ...formulario,
-  precio: Number(formulario.precio),
-  stock: Number(formulario.stock),
-  categoriaId: Number(formulario.categoriaId),
-  imagenes
-})
+      ...formulario,
+      precio: Number(formulario.precio),
+      stock: Number(formulario.stock),
+      categoriaId: Number(formulario.categoriaId),
+      imagenes
+    })
   }
 
   return (
@@ -128,6 +139,7 @@ const handleImagenesChange = (nuevasImagenes) => {
           rows={4}
           placeholder="Describí las características del producto"
           required
+          aria-invalid={Boolean(errores.descripcion)}
         />
       </FormField>
 
@@ -169,6 +181,7 @@ const handleImagenesChange = (nuevasImagenes) => {
           value={formulario.categoriaId}
           onChange={handleChange}
           required
+          aria-invalid={Boolean(errores.categoriaId)}
         >
           <option value="">Seleccionar categoría</option>
           <option value="1">Celulares</option>
@@ -177,25 +190,24 @@ const handleImagenesChange = (nuevasImagenes) => {
           <option value="4">Gaming</option>
         </select>
       </FormField>
-      
-<div className="producto-form-imagenes">
-  <ImageUploader
-    imagenes={imagenes}
-    onImagenesChange={handleImagenesChange}
-  />
 
-  <ImageOrderList
-    imagenes={imagenes}
-    onImagenesChange={handleImagenesChange}
-  />
-</div>
+      <div className="producto-form-imagenes">
+        <ImageUploader
+          imagenes={imagenes}
+          onImagenesChange={handleImagenesChange}
+        />
 
+        <ImageOrderList
+          imagenes={imagenes}
+          onImagenesChange={handleImagenesChange}
+        />
+      </div>
 
       <div className="producto-form-botones">
         <button
           type="button"
           className="btn btn-secundario"
-          onClick={onCancelar}
+          onClick={() => onCancelar(imagenes)}
         >
           Cancelar
         </button>
