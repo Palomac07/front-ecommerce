@@ -8,6 +8,8 @@ export default function BuyPanel({ producto }) {
   const [cantidad, setCantidad] = useState(1)
   const [mensajeAccion, setMensajeAccion] = useState(null)
 
+  const [agregando, setAgregando] = useState(false)
+
   const decrementar = () => {
     setCantidad((prev) => Math.max(1, prev - 1))
     setMensajeAccion(null)
@@ -30,10 +32,17 @@ export default function BuyPanel({ producto }) {
 
   const handleAgregarAlCarrito = () => {
     if (!hayStock) return
+    setAgregando(true)
     setMensajeAccion({
       tipo: 'exito',
       texto: `¡Se ${cantidad === 1 ? 'agregó 1 unidad' : `agregaron ${cantidad} unidades`} al carrito!`
     })
+    setTimeout(() => {
+      setAgregando(false)
+    }, 400)
+    setTimeout(() => {
+      setMensajeAccion((actual) => (actual?.tipo === 'exito' ? null : actual))
+    }, 2500)
   }
 
   const handleComprarAhora = () => {
@@ -108,11 +117,11 @@ export default function BuyPanel({ producto }) {
 
         <button
           type="button"
-          className="btn btn-secundario buy-panel__btn-carrito"
+          className={`btn btn-secundario buy-panel__btn-carrito ${agregando ? 'buy-panel__btn-carrito--pulsado' : ''}`}
           disabled={!hayStock}
           onClick={handleAgregarAlCarrito}
         >
-          Agregar al carrito
+          {agregando ? '¡Agregado!' : 'Agregar al carrito'}
         </button>
       </div>
 

@@ -25,7 +25,7 @@ export default function DetalleProducto() {
       <div className="detalle-producto detalle-producto--error">
         <div className="estado-error card">
           <h2>No se encontró el producto</h2>
-          <p>{error || 'El producto que buscas no existe o no se encuentra disponible.'}</p>
+          <p>El producto que buscas no existe, fue retirado o no se encuentra disponible.</p>
           <div className="detalle-error-acciones">
             <Link to="/" className="btn">
               Volver al inicio
