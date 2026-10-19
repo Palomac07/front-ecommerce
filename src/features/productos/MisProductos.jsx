@@ -11,6 +11,9 @@ export default function MisProductos() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false)
   const [productoSeleccionado, setProductoSeleccionado] = useState(null)
   const [productoAEliminar, setProductoAEliminar] = useState(null)
+  const [productosLocales, setProductosLocales] = useState(null)
+const [mensaje, setMensaje] = useState('')
+const productosMostrados = productosLocales ?? data ?? []
 
 const handleEditar = (producto) => {
   setProductoSeleccionado(producto)
@@ -28,6 +31,36 @@ const handleCancelarEliminar = () => {
 const handleConfirmarEliminar = () => {
   console.log('Confirmada eliminación:', productoAEliminar)
   setProductoAEliminar(null)
+}
+const handleGuardarProducto = (datos) => {
+  const productosActuales = productosLocales ?? data ?? []
+
+  if (productoSeleccionado) {
+    const actualizados = productosActuales.map((producto) =>
+      producto.id === productoSeleccionado.id
+        ? {
+            ...producto,
+            ...datos
+          }
+        : producto
+    )
+
+    setProductosLocales(actualizados)
+    setMensaje('Producto actualizado correctamente.')
+  } else {
+    const nuevoProducto = {
+      ...datos,
+      id: Math.max(0, ...productosActuales.map((p) => p.id)) + 1,
+      categoriaNombre: '',
+      imagenPrincipalUrl: null
+    }
+
+    setProductosLocales([...productosActuales, nuevoProducto])
+    setMensaje('Producto agregado correctamente.')
+  }
+
+  setMostrarFormulario(false)
+  setProductoSeleccionado(null)
 }
 
   return (
@@ -50,6 +83,11 @@ const handleConfirmarEliminar = () => {
         </button>
       </header>
 
+      {mensaje && (
+  <p className="mensaje-producto" role="status">
+    {mensaje}
+  </p>
+)}
       {loading && (
         <p className="estado-carga">Cargando productos...</p>
       )}
@@ -62,11 +100,11 @@ const handleConfirmarEliminar = () => {
   <div className="productos-contenido">
     <h2>Publicaciones disponibles</h2>
     <p>
-      Hay {data.length} productos cargados en el catálogo.
+      Hay {productosMostrados.length} productos cargados en el catálogo.
     </p>
 
     <MyListingsTable
-  productos={data}
+  productos={productosMostrados}
   onEditar={handleEditar}
   onEliminar={handleEliminar}
 />
@@ -77,9 +115,7 @@ const handleConfirmarEliminar = () => {
   <ProductForm
     key={productoSeleccionado?.id ?? 'nuevo'}
     productoInicial={productoSeleccionado}
-    onGuardar={(datos) => {
-      console.log('Datos del formulario:', datos)
-    }}
+    onGuardar={handleGuardarProducto}
     onCancelar={() => {
       setMostrarFormulario(false)
       setProductoSeleccionado(null)
