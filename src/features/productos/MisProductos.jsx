@@ -29,7 +29,16 @@ const handleCancelarEliminar = () => {
 }
 
 const handleConfirmarEliminar = () => {
-  console.log('Confirmada eliminación:', productoAEliminar)
+  if (!productoAEliminar) return
+
+  const productosActuales = productosLocales ?? data ?? []
+
+  const productosActualizados = productosActuales.filter(
+    (producto) => producto.id !== productoAEliminar.id
+  )
+
+  setProductosLocales(productosActualizados)
+  setMensaje(`Producto "${productoAEliminar.nombre}" eliminado correctamente.`)
   setProductoAEliminar(null)
 }
 const handleGuardarProducto = (datos) => {
