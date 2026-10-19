@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useMockFetch } from '../../hooks/useMockFetch'
 import './productos.css'
+import MyListingsTable from './MyListingsTable'
 
 export default function MisProductos() {
   const { data, loading, error } = useMockFetch('productos')
@@ -32,14 +33,16 @@ export default function MisProductos() {
         <p className="estado-error">Error: {error}</p>
       )}
 
-      {!loading && !error && data && (
-        <div className="productos-contenido">
-          <h2>Publicaciones disponibles</h2>
-          <p>
-            Hay {data.length} productos cargados en el catálogo.
-          </p>
-        </div>
-      )}
+      {!loading && !error && Array.isArray(data) && (
+  <div className="productos-contenido">
+    <h2>Publicaciones disponibles</h2>
+    <p>
+      Hay {data.length} productos cargados en el catálogo.
+    </p>
+
+    <MyListingsTable productos={data} />
+  </div>
+)}
 
       {mostrarFormulario && (
         <div className="productos-contenido">
