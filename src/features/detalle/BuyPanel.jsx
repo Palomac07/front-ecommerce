@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import StockBadge from './StockBadge'
 import PriceBlock from './PriceBlock'
 
 export default function BuyPanel({ producto }) {
+  const navigate = useNavigate()
   const stock = Number(producto?.stock ?? 0)
   const hayStock = stock > 0
   const [cantidad, setCantidad] = useState(1)
@@ -47,10 +49,7 @@ export default function BuyPanel({ producto }) {
 
   const handleComprarAhora = () => {
     if (!hayStock) return
-    setMensajeAccion({
-      tipo: 'info',
-      texto: 'Redirigiendo al proceso de compra...'
-    })
+    navigate('/carrito')
   }
 
   return (
