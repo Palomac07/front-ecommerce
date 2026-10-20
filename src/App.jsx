@@ -24,7 +24,7 @@ export default function App() {
         <Route path="productos/:id" element={<DetalleProducto />} />
         <Route path="carrito" element={<Carrito />} />
         <Route path="mis-productos" element={<MisProductos />} />
-        <Route path="categorias" element={<Categorias />} />
+        <Route path="categorias/:id?" element={<Categorias />} />
         <Route path="login" element={<Login />} />
         <Route path="registro" element={<Registro />} />
         <Route path="*" element={<NoEncontrado />} />
