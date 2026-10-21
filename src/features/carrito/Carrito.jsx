@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useMockFetch } from '../../hooks/useMockFetch'
+import { conCantidad, recalcularCarrito } from './carritoCalculos'
+import CartItemList from './CartItemList'
 import './carrito.css'
 
 /**
@@ -15,6 +17,9 @@ export default function Carrito() {
   // GET /api/carrito
   const { data, loading, error } = useMockFetch('carrito')
 
+  // GET /api/productos: stock e imagen de cada producto del carrito
+  const { data: productos } = useMockFetch('productos')
+
   // POST /api/carrito responde 201 con un CarritoDTO vacio (carrito-vacio.json)
   const [crearSolicitado, setCrearSolicitado] = useState(false)
   const {
@@ -24,11 +29,41 @@ export default function Carrito() {
   } = useMockFetch(crearSolicitado ? 'carrito-vacio' : null)
   const creando = crearSolicitado && cargandoCreado
 
-  const carrito = carritoCreado ?? data
+  // Resultado de la ultima operacion simulada (PUT, POST, DELETE)
+  const [carritoLocal, setCarritoLocal] = useState(null)
+  const [mensaje, setMensaje] = useState(null)
+
+  const carrito = carritoLocal ?? carritoCreado ?? data
+
+  const buscarProducto = (productoId) =>
+    productos?.find((producto) => producto.id === productoId)
 
   const handleCrearCarrito = () => {
     // POST /api/carrito
     setCrearSolicitado(true)
+  }
+
+  const handleCambiarCantidad = (productoId, cantidad) => {
+    // PUT /api/carrito/items/{productoId}  body { cantidad }
+    const producto = buscarProducto(productoId)
+    if (cantidad < 1) return
+    if (!producto || cantidad > producto.stock) {
+      setMensaje({
+        tipo: 'error',
+        texto: `No hay stock suficiente de ${producto?.nombre ?? 'este producto'}.`,
+      })
+      return
+    }
+
+    setCarritoLocal(
+      recalcularCarrito(
+        carrito,
+        carrito.items.map((item) =>
+          item.productoId === productoId ? conCantidad(item, cantidad) : item
+        )
+      )
+    )
+    setMensaje(null)
   }
 
   // Si el usuario no tiene carrito, el back responde 404 al GET y se ofrece
@@ -46,6 +81,15 @@ export default function Carrito() {
           </p>
         )}
       </header>
+
+      {mensaje && (
+        <p
+          className={`carrito-mensaje carrito-mensaje-${mensaje.tipo}`}
+          role={mensaje.tipo === 'error' ? 'alert' : 'status'}
+        >
+          {mensaje.texto}
+        </p>
+      )}
 
       {loading && <p className="estado-carga">Cargando carrito...</p>}
 
@@ -72,13 +116,11 @@ export default function Carrito() {
 
       {carrito && (
         carrito.items.length > 0 ? (
-          <ul>
-            {carrito.items.map((item) => (
-              <li key={item.productoId}>
-                {item.nombre} × {item.cantidad}
-              </li>
-            ))}
-          </ul>
+          <CartItemList
+            items={carrito.items}
+            productos={productos}
+            onCambiarCantidad={handleCambiarCantidad}
+          />
         ) : (
           <div className="carrito-aviso card">
             <h2>Tu carrito está vacío</h2>
