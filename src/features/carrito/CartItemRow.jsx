@@ -6,7 +6,7 @@ import QuantityStepper from './QuantityStepper'
  * Una linea del carrito (ItemCarritoDTO). El producto del catalogo se usa
  * solo para mostrar la imagen y conocer el stock maximo.
  */
-export default function CartItemRow({ item, producto, onCambiarCantidad }) {
+export default function CartItemRow({ item, producto, onCambiarCantidad, onEliminar }) {
   const stock = producto?.stock
   const imagen = producto?.imagenPrincipalUrl
 
@@ -44,6 +44,14 @@ export default function CartItemRow({ item, producto, onCambiarCantidad }) {
           onCambiar={(cantidad) => onCambiarCantidad(item.productoId, cantidad)}
         />
         <p className="carrito-item-subtotal">{formatearPrecio(item.subtotal)}</p>
+        <button
+          type="button"
+          className="carrito-btn-eliminar"
+          onClick={() => onEliminar(item.productoId)}
+          aria-label={`Eliminar ${item.nombre} del carrito`}
+        >
+          Eliminar
+        </button>
       </div>
     </li>
   )

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useMockFetch } from '../../hooks/useMockFetch'
-import { conCantidad, recalcularCarrito } from './carritoCalculos'
+import { conCantidad, recalcularCarrito, vaciarCarrito } from './carritoCalculos'
 import CartItemList from './CartItemList'
 import './carrito.css'
 
@@ -66,6 +66,25 @@ export default function Carrito() {
     setMensaje(null)
   }
 
+  const handleEliminarItem = (productoId) => {
+    // DELETE /api/carrito/items/{productoId}
+    const eliminado = carrito.items.find((item) => item.productoId === productoId)
+    setCarritoLocal(
+      recalcularCarrito(
+        carrito,
+        carrito.items.filter((item) => item.productoId !== productoId)
+      )
+    )
+    setMensaje({ tipo: 'ok', texto: `Se quitó "${eliminado.nombre}" del carrito.` })
+  }
+
+  const handleVaciarCarrito = () => {
+    // DELETE /api/carrito/items → 204 sin cuerpo. El carrito queda igual que
+    // carrito-vacio.json: mismo id y usuarioId, sin items y en cero.
+    setCarritoLocal(vaciarCarrito(carrito))
+    setMensaje({ tipo: 'ok', texto: 'Vaciaste el carrito.' })
+  }
+
   // Si el usuario no tiene carrito, el back responde 404 al GET y se ofrece
   // crearlo. Con un carrito ya existente (aunque este vacio) el POST da 409.
   const sinCarrito = !loading && !carrito
@@ -120,6 +139,8 @@ export default function Carrito() {
             items={carrito.items}
             productos={productos}
             onCambiarCantidad={handleCambiarCantidad}
+            onEliminar={handleEliminarItem}
+            onVaciar={handleVaciarCarrito}
           />
         ) : (
           <div className="carrito-aviso card">

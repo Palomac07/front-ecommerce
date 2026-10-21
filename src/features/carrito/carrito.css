@@ -184,3 +184,51 @@
   text-align: center;
   font-variant-numeric: tabular-nums;
 }
+
+/* ---------- Eliminar y vaciar ---------- */
+
+.carrito-btn-eliminar {
+  padding: 4px 0;
+  border: none;
+  background: none;
+  color: var(--color-texto-suave);
+  font-size: 0.88rem;
+  text-decoration: underline;
+}
+
+.carrito-btn-eliminar:hover {
+  color: var(--color-error);
+}
+
+.carrito-lista-pie {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 0 16px;
+  border-top: 1px solid var(--color-borde);
+}
+
+.carrito-confirmar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.carrito-confirmar p {
+  margin: 0;
+}
+
+.carrito-confirmar-acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.btn.carrito-btn-peligro {
+  background: var(--color-error);
+}
+
+.btn.carrito-btn-peligro:hover {
+  filter: brightness(0.9);
+}
