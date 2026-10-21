@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useMockFetch } from '../../hooks/useMockFetch'
 import { conCantidad, recalcularCarrito, vaciarCarrito } from './carritoCalculos'
 import CartItemList from './CartItemList'
+import OrderSummary from './OrderSummary'
 import './carrito.css'
 
 /**
@@ -134,23 +135,31 @@ export default function Carrito() {
       )}
 
       {carrito && (
-        carrito.items.length > 0 ? (
-          <CartItemList
-            items={carrito.items}
-            productos={productos}
-            onCambiarCantidad={handleCambiarCantidad}
-            onEliminar={handleEliminarItem}
-            onVaciar={handleVaciarCarrito}
-          />
-        ) : (
-          <div className="carrito-aviso card">
-            <h2>Tu carrito está vacío</h2>
-            <p>Agregá productos para verlos acá.</p>
-            <Link to="/" className="btn btn-secundario">
-              Ver productos
-            </Link>
+        <div className="carrito-grilla">
+          <div className="carrito-principal">
+            {carrito.items.length > 0 ? (
+              <CartItemList
+                items={carrito.items}
+                productos={productos}
+                onCambiarCantidad={handleCambiarCantidad}
+                onEliminar={handleEliminarItem}
+                onVaciar={handleVaciarCarrito}
+              />
+            ) : (
+              <div className="carrito-aviso card">
+                <h2>Tu carrito está vacío</h2>
+                <p>Agregá productos para verlos acá.</p>
+                <Link to="/" className="btn btn-secundario">
+                  Ver productos
+                </Link>
+              </div>
+            )}
           </div>
-        )
+
+          <aside className="carrito-lateral">
+            <OrderSummary carrito={carrito} />
+          </aside>
+        </div>
       )}
     </section>
   )
