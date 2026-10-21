@@ -417,3 +417,93 @@
   gap: 8px;
   flex-wrap: wrap;
 }
+
+/* ============================================================
+   Responsive. En movil una sola columna con el resumen abajo
+   (va despues de la lista en el HTML) y botones de tamaño tactil.
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .carrito-grilla {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .carrito-lateral {
+    position: static;
+  }
+
+  .carrito .btn {
+    min-height: 44px;
+  }
+
+  .carrito-lista {
+    padding: 4px 14px;
+  }
+
+  .carrito-item {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .carrito-item-imagen {
+    width: 64px;
+    height: 64px;
+  }
+
+  /* Cantidad, subtotal y eliminar pasan a una fila propia debajo */
+  .carrito-item-acciones {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 12px;
+  }
+
+  .carrito-stepper-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .carrito-btn-eliminar {
+    min-height: 44px;
+    padding: 0 4px;
+  }
+
+  .carrito-confirmar-acciones {
+    width: 100%;
+  }
+
+  .carrito-confirmar-acciones .btn {
+    flex: 1;
+  }
+
+  .carrito-checkout-btn {
+    min-height: 48px;
+  }
+
+  .carrito-resultado-acciones .btn {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .carrito-encabezado h1 {
+    font-size: 1.45rem;
+  }
+
+  .carrito-sugeridos-grilla {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .carrito-sugerido {
+    padding: 10px;
+  }
+
+  .carrito-sugerido-imagen {
+    height: 96px;
+  }
+}
