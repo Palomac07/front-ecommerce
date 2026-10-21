@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useMockFetch } from '../../hooks/useMockFetch'
-import { conCantidad, recalcularCarrito, vaciarCarrito } from './carritoCalculos'
+import { conCantidad, crearItem, recalcularCarrito, vaciarCarrito } from './carritoCalculos'
 import CartItemList from './CartItemList'
 import OrderSummary from './OrderSummary'
+import SuggestedProducts from './SuggestedProducts'
 import './carrito.css'
 
 /**
@@ -79,6 +80,31 @@ export default function Carrito() {
     setMensaje({ tipo: 'ok', texto: `Se quitó "${eliminado.nombre}" del carrito.` })
   }
 
+  const handleAgregarProducto = (productoId, cantidad) => {
+    // POST /api/carrito/items  body { productoId, cantidad }
+    // Si el producto ya esta en el carrito, el back suma la cantidad.
+    const producto = buscarProducto(productoId)
+    const existente = carrito.items.find((item) => item.productoId === productoId)
+    const cantidadFinal = (existente?.cantidad ?? 0) + cantidad
+
+    if (!producto || cantidadFinal > producto.stock) {
+      setMensaje({
+        tipo: 'error',
+        texto: `No hay stock suficiente de ${producto?.nombre ?? 'este producto'}.`,
+      })
+      return
+    }
+
+    const items = existente
+      ? carrito.items.map((item) =>
+          item.productoId === productoId ? conCantidad(item, cantidadFinal) : item
+        )
+      : [...carrito.items, crearItem(producto, cantidad)]
+
+    setCarritoLocal(recalcularCarrito(carrito, items))
+    setMensaje({ tipo: 'ok', texto: `Agregaste "${producto.nombre}" al carrito.` })
+  }
+
   const handleVaciarCarrito = () => {
     // DELETE /api/carrito/items → 204 sin cuerpo. El carrito queda igual que
     // carrito-vacio.json: mismo id y usuarioId, sin items y en cero.
@@ -89,6 +115,12 @@ export default function Carrito() {
   // Si el usuario no tiene carrito, el back responde 404 al GET y se ofrece
   // crearlo. Con un carrito ya existente (aunque este vacio) el POST da 409.
   const sinCarrito = !loading && !carrito
+
+  const sugeridos = carrito && productos
+    ? productos.filter(
+        (producto) => !carrito.items.some((item) => item.productoId === producto.id)
+      )
+    : []
 
   return (
     <section className="carrito">
@@ -160,6 +192,10 @@ export default function Carrito() {
             <OrderSummary carrito={carrito} />
           </aside>
         </div>
+      )}
+
+      {carrito && (
+        <SuggestedProducts productos={sugeridos} onAgregar={handleAgregarProducto} />
       )}
     </section>
   )
