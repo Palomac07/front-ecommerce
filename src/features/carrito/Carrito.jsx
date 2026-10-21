@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useMockFetch } from '../../hooks/useMockFetch'
 import { conCantidad, crearItem, recalcularCarrito, vaciarCarrito } from './carritoCalculos'
 import CartItemList from './CartItemList'
+import CheckoutButton from './CheckoutButton'
+import CheckoutResult from './CheckoutResult'
 import OrderSummary from './OrderSummary'
 import SuggestedProducts from './SuggestedProducts'
 import './carrito.css'
@@ -35,7 +37,45 @@ export default function Carrito() {
   const [carritoLocal, setCarritoLocal] = useState(null)
   const [mensaje, setMensaje] = useState(null)
 
+  // Carrito que se esta confirmando y CheckoutResponse de la ultima compra
+  const [pedidoCheckout, setPedidoCheckout] = useState(null)
+  const [resultadoCheckout, setResultadoCheckout] = useState(null)
+
   const carrito = carritoLocal ?? carritoCreado ?? data
+
+  useEffect(() => {
+    if (!pedidoCheckout) return
+
+    // Misma bandera que useMockFetch: con StrictMode el efecto corre dos veces.
+    let cancelado = false
+
+    // POST /api/carrito/checkout
+    fetch('/data/checkout.json')
+      .then((res) => {
+        if (!res.ok) throw new Error('No se pudo confirmar la compra.')
+        return res.json()
+      })
+      .then((json) => {
+        if (cancelado) return
+        // El back calcula cantidad y monto con el carrito confirmado; el mock
+        // trae los del carrito original, asi que se completan con el pedido.
+        setResultadoCheckout({
+          ...json,
+          cantidadItemsComprados: pedidoCheckout.cantidadProductos,
+          montoTotal: pedidoCheckout.total,
+        })
+        // Tras un checkout exitoso el back vacia el carrito.
+        setCarritoLocal(vaciarCarrito(pedidoCheckout))
+      })
+      .catch((err) => {
+        if (!cancelado) setMensaje({ tipo: 'error', texto: err.message })
+      })
+      .finally(() => {
+        if (!cancelado) setPedidoCheckout(null)
+      })
+
+    return () => { cancelado = true }
+  }, [pedidoCheckout])
 
   const buscarProducto = (productoId) =>
     productos?.find((producto) => producto.id === productoId)
@@ -112,6 +152,13 @@ export default function Carrito() {
     setMensaje({ tipo: 'ok', texto: 'Vaciaste el carrito.' })
   }
 
+  const handleCheckout = () => {
+    if (carrito.items.length === 0) return
+    setResultadoCheckout(null)
+    setMensaje(null)
+    setPedidoCheckout(carrito)
+  }
+
   // Si el usuario no tiene carrito, el back responde 404 al GET y se ofrece
   // crearlo. Con un carrito ya existente (aunque este vacio) el POST da 409.
   const sinCarrito = !loading && !carrito
@@ -133,6 +180,13 @@ export default function Carrito() {
           </p>
         )}
       </header>
+
+      {resultadoCheckout && (
+        <CheckoutResult
+          resultado={resultadoCheckout}
+          onCerrar={() => setResultadoCheckout(null)}
+        />
+      )}
 
       {mensaje && (
         <p
@@ -189,7 +243,13 @@ export default function Carrito() {
           </div>
 
           <aside className="carrito-lateral">
-            <OrderSummary carrito={carrito} />
+            <OrderSummary carrito={carrito}>
+              <CheckoutButton
+                carritoVacio={carrito.items.length === 0}
+                procesando={pedidoCheckout !== null}
+                onConfirmar={handleCheckout}
+              />
+            </OrderSummary>
           </aside>
         </div>
       )}
